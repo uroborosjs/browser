@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "target": "es5",
+    "module": "node",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2016",
+      "esnext"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "utils/*": [ "utils/*" ],
+      "assets/*": [ "assets/*" ],
+      "components/*": [ "components/*" ],
+      "styles": [ "styles/index.ts" ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts"
+  ]
+}

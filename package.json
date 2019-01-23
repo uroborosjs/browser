@@ -1,0 +1,44 @@
+{
+  "name": "usoboros-browser",
+  "version": "0.0.1",
+  "description": "Usoboros starters project browser flavor.",
+  "scripts": {
+    "dev": "parcel src/index.html --port 8888 --no-autoinstall --out-dir dist",
+    "build": "parcel build src/index.html --out-dir build",
+    "test": "ava -w",
+    "test:once": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uroborosjs/browser.git"
+  },
+  "author": "Michiel Kamphuis <mfk@kamphuis.eu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uroborosjs/browser/issues"
+  },
+  "homepage": "https://github.com/uroborosjs/browser#readme",
+  "devDependencies": {
+    "ava": "^1.0.1",
+    "cycle-restart": "^0.2.3",
+    "parcel-bundler": "^1.11.0",
+    "parcel-plugin-inlinesvg": "^0.1.0",
+    "parcel-plugin-typescript-paths": "^0.1.13",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "@cycle/dom": "^22.3.0",
+    "@cycle/history": "^7.1.0",
+    "@cycle/http": "^15.1.0",
+    "@cycle/isolate": "^4.2.0",
+    "@cycle/run": "^5.2.0",
+    "@cycle/state": "^1.1.0",
+    "csstips": "^0.3.0",
+    "csx": "^9.0.0",
+    "cyclejs-utils": "^4.0.2",
+    "cyclic-router": "^6.0.0",
+    "rambda": "^2.3.0",
+    "typestyle": "^2.0.1",
+    "xstream": "^11.9.0"
+  }
+}
