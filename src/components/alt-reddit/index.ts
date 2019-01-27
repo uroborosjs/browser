@@ -3,10 +3,17 @@ import { makeCollection } from '@cycle/state';
 import { div } from '@cycle/dom'
 
 import
-{ State
-, Component
-} from './types'
-
+{ Component
+, HTTPSink
+, DOMSink
+, StateSink
+, RouterSink
+} from 'types'
+import
+{ Sources
+, State
+, intent
+} from './intent'
 import { toDOM } from './dom'
 import { toState } from './state'
 import { styles } from './styles'
@@ -16,7 +23,13 @@ import { mainNav } from 'components/main-nav'
 // import { RedditItem } from 'components/reddit-item'
 import { RedditItem } from 'components/alt-reddit-item'
 
-const Reddit: Component =
+type Sinks =
+  DOMSink
+  & HTTPSink
+  & RouterSink
+  & StateSink<State>
+
+const Reddit: Component<Sources, Sinks> =
   ({ DOM, state, HTTP }) => {
     const nav =
       isolate
@@ -48,27 +61,33 @@ const Reddit: Component =
       )
       ({ DOM, state })
 
-    const dom$ =
+    const { state$
+          , cats$
+          } = intent({DOM, HTTP, state})
+
+    const domSink$ =
       toDOM
-      ( state.stream
-      , nav.DOM
-      , redditList.DOM
+      ( { state$
+        , nav$: nav.DOM
+        , catList$: redditList.DOM
+        }
       )
 
-    const state$ =
+    const stateSink$ =
       toState
-      ( HTTP
-      , nav.state
-      , redditList.state
+      ( { cats$
+        , nav$: nav.state
+        , redditList$: redditList.state
+        }
       )
 
-    const http$ =
+    const httpSink$ =
       toHTTP()
 
     return (
-      { DOM: dom$
-      , state: state$
-      , HTTP: http$
+      { DOM: domSink$
+      , state: stateSink$
+      , HTTP: httpSink$
       , router: nav.router
       }
     )

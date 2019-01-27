@@ -1,32 +1,64 @@
-import { Stream } from 'xstream'
-import { DOMSource, VNode } from '@cycle/dom'
-import { HTTPSource, RequestInput } from '@cycle/http'
 import
-{ StateSource
-, Reducer
+{ Stream
+} from 'xstream'
+import
+{ DOMSource as DOMSourceUnit
+, VNode
+} from '@cycle/dom'
+import
+{ HTTPSource as HTTPSourceUnit
+, RequestInput
+} from '@cycle/http'
+import
+{ StateSource as StateSourceUnit
+, Reducer as Reducer
 } from '@cycle/state'
 import
-{ RouterSource
-, RouterSink
+{ RouterSource as RouterSourceUnit
+, RouterSink as RouterSinkUnit
 } from 'cyclic-router';
 
-type Sources =
-  { DOM: DOMSource
-  , HTTP: HTTPSource
-  , router: RouterSource
-  , state: StateSource<any>
-  }
+type DOMSource =
+  { DOM: DOMSourceUnit }
+type HTTPSource =
+  { HTTP: HTTPSourceUnit }
+type RouterSource =
+  { router: RouterSourceUnit }
+type StateSource<T> =
+  { state: StateSourceUnit<T> }
 
-type Sinks =
-  { DOM?: Stream<VNode>
-  , HTTP?: Stream<RequestInput>
-  , router?: RouterSink
-  , state: Stream<Reducer<any>>
-  }
+type DOMSink =
+  { DOM: Stream<VNode> }
+type HTTPSink =
+  { HTTP: Stream<RequestInput> }
+type RouterSink =
+  { router: RouterSinkUnit }
+type StateSink<T> =
+  { state: Stream<Reducer<T>> }
 
-type Component =
-  (sources: Sources) => Sinks
+type MaybeDOMSink =
+  { DOM?: Stream<VNode> }
+type MaybeHTTPSink =
+  { HTTP?: Stream<RequestInput> }
+type MaybeRouterSink =
+  { router?: RouterSinkUnit }
+type MaybeStateSink<T> =
+  { state?: Stream<Reducer<T>> }
+
+type Component <T, R> = (sources: T) => R
 
 export
-{ Component
+{ DOMSource
+, HTTPSource
+, RouterSource
+, StateSource
+, DOMSink
+, MaybeDOMSink
+, HTTPSink
+, MaybeHTTPSink
+, RouterSink
+, MaybeRouterSink
+, StateSink
+, MaybeStateSink
+, Component
 }
