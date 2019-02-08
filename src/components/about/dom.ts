@@ -1,9 +1,7 @@
 import xs from 'xstream'
 import
 { div
-, svg
 } from '@cycle/dom' 
-import logoSvg from 'assets/uroboros-logo.svg'
 
 import { map } from 'rambda'
 

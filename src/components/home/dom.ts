@@ -3,7 +3,7 @@ import
 { div
 , svg
 } from '@cycle/dom' 
-import logoSvg from 'assets/uroboros-logo.svg'
+import logoSvg from 'assets/logo.svg'
 
 import { map } from 'rambda'
 

@@ -1,37 +1,59 @@
-{ "name": "InstaPy-Web"
-, "short_name": "InstaPy-Web"
-, "start_url": "."
+{ "name": "Uroboros"
+, "short_name": "Uroboros"
+, "start_url": "/"
 , "display": "standalone"
 , "background_color": "#dab"
-, "description": "InstaPy automate your insta."
+, "theme_color": "#dab"
+, "description": "Cycling with snakes, Must be a good idea!"
 , "icons":
-  [ { "src": "assets/icons/instapy-web-icon-48.png"
-    , "sizes": "48x48"
+  [ { "src": "assets/icons/favicon-32.png"
+    , "sizes": "32x32"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-72.png"
+  , { "src": "assets/icons/favicon-57.png"
+    , "sizes": "57x57"
+    , "type": "image/png"
+    }
+  , { "src": "assets/icons/favicon-72.png"
     , "sizes": "72x72"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-96.png"
+  , { "src": "assets/icons/favicon-96.png"
     , "sizes": "96x96"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-144.png"
+  , { "src": "assets/icons/favicon-120.png"
+    , "sizes": "120x120"
+    , "type": "image/png"
+    }
+  , { "src": "assets/icons/favicon-128.png"
+    , "sizes": "128x128"
+    , "type": "image/png"
+    }
+  , { "src": "assets/icons/favicon-144.png"
     , "sizes": "144x144"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-168.png"
-    , "sizes": "168x168"
+  , { "src": "assets/icons/favicon-152.png"
+    , "sizes": "152x152"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-192.png"
-    , "sizes": "192x192"
+  , { "src": "assets/icons/favicon-195.png"
+    , "sizes": "195x195"
     , "type": "image/png"
     }
-  , { "src": "assets/icons/instapy-web-icon-512.png"
-    , "sizes": "512x512"
+  , { "src": "assets/icons/favicon-228.png"
+    , "sizes": "228x228"
     , "type": "image/png"
+    }
+  , { "src": "assets/icons/app.ico"
+    , "sizes": "72x72 96x96 128x128 256x256"
+    }
+  , { "src": "assets/logo.svg"
+    , "sizes": "72x72 96x96 128x128 256x256 512x512"
+    }
+  , { "src": "assets/icons/app.icns"
+    , "sizes": "72x72 96x96 128x128 256x256"
     }
   ]
 }
