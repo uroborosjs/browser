@@ -24,7 +24,8 @@ type State =
 
 type Sources =
   DOMSource
-  & HTTPSource
+  & { HTTP: any }
+  // & HTTPSource
   & StateSource<State>
 
 type State$ = Record<'state$', Stream<State>>
@@ -43,7 +44,7 @@ const intent: Intent =
   ) => {
     const state$ = state.stream
 
-    const cats$ =
+    const cats$: any =
       HTTP
         .select('cats')
         .flatten()

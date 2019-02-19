@@ -14,6 +14,12 @@ import
 import { routes } from './routes'
 import { driverNames } from './drivers'
 
+import { cssRaw, cssRule } from 'typestyle'
+import sanitize from 'sanitize.css/sanitize.css'
+// remove
+import { Home } from 'components/home'
+//
+
 type Sources =
   DOMSource
   & HTTPSource
@@ -26,20 +32,30 @@ type Sinks =
   & MaybeRouterSink
   & MaybeStateSink<any>
 
+// console.log(sanitize)
+cssRaw(sanitize)
+
 const Main: Component<Sources, Sinks> =
   (sources) => {
+    // const routedComponentSinks$ =
+    //   sources
+    //     .router
+    //     .routedComponent (routes) (sources)
     const routedComponentSinks$ =
-      sources
-        .router
-        .routedComponent (routes) (sources)
+      <any>Home (sources)
+      // routes.$nest['/home'] !== undefined
+      //   ? routes.$nest['/home'] (sources)
+      //   : (sources) => {}
 
 
     return (
-      { ...extractSinks
-           ( routedComponentSinks$
-           , driverNames
-           )
+      { ...routedComponentSinks$
       }
+      // { ...extractSinks
+      //      ( routedComponentSinks$
+      //      , driverNames
+      //      )
+      // }
     )
   }
 

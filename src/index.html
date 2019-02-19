@@ -11,15 +11,20 @@
     <link rel="icon" type="image/png" href="./assets/icons/favicon.ico">
     <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/beon" type="text/css"/> 
     <link rel="manifest" href="./manifest.webmanifest">
+
+    <!-- don't change important for ssr -->
+    <style id="typestyle"></style>
   </head>
 
   <body>
-    <div id="app"> </div>
+    <!-- don't change important for ssr -->
+    <div id="app"></div>
+
     <script>
       if ( 'serviceWorker' in navigator ) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js')})
       }
     </script>
-    <script src="./index.ts"></script>
+    <script src="./app.ts"></script>
   </body>
 </html>

@@ -2,22 +2,25 @@ import xs from 'xstream'
 
 import
 { HTTPSink
-, RequestOptions
-} from './types'
+// , RequestOptions
+} from 'types'
 
 type toHTTP =
   () => HTTPSink
 const toHTTP: toHTTP =
   () => {
     const requestCats$ =
-      xs.of<RequestOptions>
+      xs.of<any>
          ( { url: 'https://www.reddit.com/r/catpictures.json'
            , method: 'GET'
            , category: 'cats'
            }
          )
 
-    return requestCats$
+    return (
+      { HTTP: requestCats$
+      }
+    )
   }
 
 export

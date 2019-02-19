@@ -4,6 +4,7 @@ import
 , svg
 } from '@cycle/dom' 
 import logoSvg from 'assets/logo.svg'
+// const logoSvg = ''
 
 import { map } from 'rambda'
 

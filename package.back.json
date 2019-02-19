@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Usoboros starters project browser flavor.",
   "scripts": {
-    "dev": "parcel src/index.html --port 1337 --no-autoinstall --out-dir dist",
-    "app:build": "parcel build src/index.html --out-dir build/static",
-    "server:build": "parcel build src/server.ts --target node --bundle-node-modules  --out-dir build",
-    "server:start": "node build/server.js",
+    "dev": "parcel src/index.html --port 8888 --no-autoinstall --out-dir dist",
+    "build": "parcel build src/index.html --out-dir build",
+    "app:dev": "parcel src/app.ts --port 1337 --no-autoinstall --out-dir dist",
+    "ssr:dev": "parcel src/ssr.ts --port 1338 --no-autoinstall --oud-dir dist",
     "icon": "rm ./src/assets/icons/*; icon-gen -i ./src/assets/logo.svg -o ./src/assets/icons -r",
     "test": "ava -w",
     "test:once": "ava",
@@ -27,7 +27,8 @@
     "icon-gen": "^2.0.0",
     "parcel-bundler": "^1.11.0",
     "parcel-plugin-inlinesvg": "^0.1.0",
-    "parcel-plugin-stringify-anything": "^1.2.0",
+    "parcel-plugin-prerender": "^1.1.0",
+    "parcel-plugin-sw-cache": "^0.2.7",
     "parcel-plugin-typescript-paths": "^0.1.13",
     "tsconfig-paths": "^3.8.0",
     "typescript": "^3.2.2"
@@ -44,21 +45,21 @@
     "csx": "^9.0.0",
     "cyclejs-utils": "^4.0.2",
     "cyclic-router": "^6.0.0",
-    "radium-sanitize": "^4.1.0",
     "rambda": "^2.3.0",
     "sanitize.css": "^8.0.0",
-    "styled-sanitize": "^1.1.1",
     "typestyle": "^2.0.1",
     "workbox-sw": "^3.6.3",
     "xstream": "^11.9.0"
   },
-  "assetTypesToStringify": [
-    "css"
-  ],
   "prerender": {
     "routes": [
       "/home",
       "/about"
     ]
+  },
+  "cache": {
+    "strategy": "inject",
+    "swSrc": "./src/sw.js",
+    "inDev": true
   }
 }

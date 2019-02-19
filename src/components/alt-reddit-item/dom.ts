@@ -39,7 +39,7 @@ const view: View =
             , [styles.hidden]: !open
             }
           }
-        , div
+        , <any>div
           ( { dataset:
               { close: true
               }
