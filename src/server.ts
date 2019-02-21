@@ -1,6 +1,8 @@
 import { createServer } from 'http'
 import
 { reduce
+, anyPass
+, map
 , compose
 , join
 , split
@@ -16,6 +18,10 @@ import { makePageHtml } from './ssr'
 
 const { readFile } = promises
 
+const STATIC_PATH =
+  (process.env.NODE_ENV === 'production'
+    ? './build'
+    : './dev') + '/static'
 // const sendStatic =
 //   (filePath: string, encoding: string | null = 'utf8') =>
 //     async () =>
@@ -47,11 +53,18 @@ const handleCorsePreflightRequest =
     }
   }
 
+const prefix =
+  (prefixStr: string) =>
+    (srcStr: string) =>
+      `${prefixStr}/${srcStr}`
+
 const frontAssets =
-  readdirSync('./build/static')
+  readdirSync(STATIC_PATH) 
+
+console.log(frontAssets)
 
 const appHtml =
-  readFileSync('./build/static/index.html', 'utf8')
+  readFileSync(`${STATIC_PATH}/index.html`, 'utf8')
 
 const genSsrHtml =
   makePageHtml (appHtml) ('app', 'typestyle')
@@ -60,8 +73,18 @@ const genSsrHtml =
 const reqFrontAsset =
   async (path: string) =>
     contains<string> (path) (frontAssets)
-      // ? readFile(`build/${path}`, path.endsWith('.png') ? null : undefined )
-      ? readFile(`build/static/${path}`, 'utf8')
+      ? readFile
+        ( `${STATIC_PATH}/${path}`
+        , anyPass
+          ( [ (p: string) => p.endsWith('.png')
+            , (p: string) => p.endsWith('.ico')
+            ] 
+          )
+          ( path )
+            ? null
+            : 'utf8'
+        )
+      // ? readFile(`build/static/${path}`, 'utf8')
       : null
 
 const LY = (v: any) => {console.log(v); return v}
@@ -80,32 +103,22 @@ const frontRoutes =
   , 'reddit'
   ]
 
-const toIndexPath =
-  (path: string) =>
-    contains<string> (path) (frontRoutes)
-      ? `path.html`
-      : path
-
-// const preparePath =
-//   compose
-//   ( toIndexPath
-//   , stringTail
-//   )
-
 const handleRequest =
   (req: any, res: any) => {
     handleCorsePreflightRequest(req, res)
 
     console.log(req.url)
     const preparedUrl = stringTail ( req.url )
+    console.log(preparedUrl)
 
     reqFrontAsset( preparedUrl )
+      .then(LY)
       .then
-       ( (contents) => contents || genSsrHtml ('')
+       ( (contents) => contents || genSsrHtml (preparedUrl)
+       )
       .then
        ( (contents) => contents || 'Nothing'
        )
-      .then(LY)
       .then
        ( (mess) => {
          if (req.url.endsWith('.png')){
@@ -121,6 +134,13 @@ const handleRequest =
                , { 'Content-Type': 'image/svg+xml'
                  }
                )
+         }
+         if (req.url.endsWith('.ico')){
+            res.writeHead
+                ( 200
+                , { 'Content-Type': 'image/x-icon'
+                  }
+                )
          }
          res.write(mess)
        })

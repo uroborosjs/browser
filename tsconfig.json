@@ -5,7 +5,7 @@
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strict": true,
-    "target": "es5",
+    "target": "node",
     "module": "commonjs",
     "lib": [
       "dom",

@@ -2,6 +2,8 @@ import isolate from '@cycle/isolate'
 import { makeCollection } from '@cycle/state';
 import { div } from '@cycle/dom'
 
+import xs from 'xstream'
+
 import
 { Component
 , HTTPSink
@@ -89,6 +91,7 @@ const Reddit: Component<Sources, Sinks> =
       , state: stateSink$
       , HTTP: httpSink$
       , router: nav.router
+      , ssr: xs.periodic(10000).mapTo(null).debug('ssr').drop(1).take(1)
       }
     )
   }

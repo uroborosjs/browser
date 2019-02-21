@@ -15,9 +15,8 @@ import { routeMatcher } from './utils/route-matcher'
 const ComposedMain = routerify(withState(<any>Main), routeMatcher)
 
 if (process.env.NODE_ENV === 'production') {
-  setStylesTarget(<Element>document.getElementById('styles'))
-  setupPage('#app')
-  normalize()
+  setStylesTarget(<Element>document.getElementById('typestyle'))
+  // setupPage('#app')
 
   run
   ( ComposedMain
@@ -37,11 +36,10 @@ if (process.env.NODE_ENV === 'production') {
       }
     )
 
-  if (document.head.getElementsByTagName('style').length === 1) {
-    setupPage('#app')
-    normalize()
-  }
-  setStylesTarget(<Element>document.getElementById('styles'))
+  // if (document.head.getElementsByTagName('style').length === 1) {
+  //   setupPage('#app')
+  // }
+  setStylesTarget(<Element>document.getElementById('typestyle'))
 
   if (hmr.hot) {
     hmr

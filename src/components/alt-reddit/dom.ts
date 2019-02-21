@@ -50,7 +50,7 @@ type Sources =
 type ToDOM = ( sources: Sources) => Stream<VNode>
 const toDOM: ToDOM =
   ({ state$, nav$, catList$ }) =>
-    xs.combine(state$, nav$.debug('nav?'), catList$ )
+    xs.combine(state$, nav$, catList$ )
       .map(view)
 
 export

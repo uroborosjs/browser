@@ -7,7 +7,7 @@ import
 
 type toHTTP =
   () => HTTPSink
-const toHTTP: toHTTP =
+const toHTTP: any =
   () => {
     const requestCats$ =
       xs.of<any>
@@ -16,10 +16,10 @@ const toHTTP: toHTTP =
            , category: 'cats'
            }
          )
+         // .debug('came here')
 
     return (
-      { HTTP: requestCats$
-      }
+      requestCats$
     )
   }
 

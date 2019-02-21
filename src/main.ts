@@ -18,6 +18,10 @@ import { cssRaw, cssRule } from 'typestyle'
 import sanitize from 'sanitize.css/sanitize.css'
 // remove
 import { Home } from 'components/home'
+import { About } from 'components/about'
+import { Reddit } from 'components/alt-reddit'
+
+import xs from 'xstream'
 //
 
 type Sources =
@@ -37,25 +41,29 @@ cssRaw(sanitize)
 
 const Main: Component<Sources, Sinks> =
   (sources) => {
-    // const routedComponentSinks$ =
-    //   sources
-    //     .router
-    //     .routedComponent (routes) (sources)
     const routedComponentSinks$ =
-      <any>Home (sources)
+      sources
+        .router
+        .routedComponent (routes) (sources)
+    // const routedComponentSinks$ =
+    //   <any>Reddit (sources)
       // routes.$nest['/home'] !== undefined
       //   ? routes.$nest['/home'] (sources)
       //   : (sources) => {}
+    // console.log(routedComponentSinks$)
 
 
     return (
-      { ...routedComponentSinks$
-      }
-      // { ...extractSinks
-      //      ( routedComponentSinks$
-      //      , driverNames
-      //      )
+      // { ...routedComponentSinks$
       // }
+      { ssr: xs.periodic(2000).drop(1).take(1)
+      // , ...routedComponentSinks$
+
+      , ...extractSinks
+           ( routedComponentSinks$
+           , driverNames
+           )
+      }
     )
   }
 

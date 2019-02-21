@@ -47,8 +47,10 @@ const intent: Intent =
     const cats$: any =
       HTTP
         .select('cats')
+        // .debug('1')
         .flatten()
-        .remember()
+        // .debug('2')
+        // .remember()
         .map(path('body.data.children'))
         .map(tail)
         .map(map(path('data')))

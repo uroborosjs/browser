@@ -1,7 +1,10 @@
 import { run } from '@cycle/run'
 import { makeHTMLDriver } from '@cycle/html'
 import { withState } from '@cycle/state'
-import { makeHistoryDriver } from '@cycle/history'
+import
+{ makeHistoryDriver
+, makeServerHistoryDriver
+} from '@cycle/history'
 import { routerify } from 'cyclic-router'
 import { getStyles } from 'typestyle'
 import
@@ -19,23 +22,48 @@ import { Main } from './main'
 import { drivers } from './drivers'
 import { routeMatcher } from './utils/route-matcher'
 
-const SSRMain =
-  (main: any) =>
-    (sources: any) => {
-      const mainSinks = main(sources)
+import xs from 'xstream'
+import sampleCombine from 'xstream/extra/sampleCombine'
+import delay from 'xstream/extra/delay'
 
-      return (
-        { ...mainSinks
-        , DOM: mainSinks.DOM.take(1)
-        }
+const endInOn =
+  (source$: any) =>
+    (stop$: any) =>
+      stop$
+        .compose(sampleCombine(source$))
+        .map(([a, b]) => b)
+      // xs.merge(source$, xs.never())
+      //   .endWhen(stop$)
+
+const SsrMain =
+  (route: string) =>
+    (main: any) =>
+      (sources: any) => {
+        const mainSinks = main(sources)
+        console.log(mainSinks.ssr)
+        console.log('route: ', route)
+
+        return (
+          { ...mainSinks
+          , router: xs.of(route)
+          // , router: xs.of(`/${route}`)
+          // , router: xs.of(route)
+          , DOM: endInOn (mainSinks.DOM) (mainSinks.ssr)
+          // , DOM: mainSinks.DOM.endWhen(mainSinks.ssr.debug('end'))
+          // , DOM: mainSinks.DOM.endWhen(mainSinks.ssr.debug('onendStream').take(1)).debug('here?')
+          }
+        )
+      }
+
+
+const SsrComposedMain =
+  (route:string) =>
+    routerify
+    ( withState
+      ( <any>SsrMain (route) (Main)
       )
-    }
-
-
-const ComposedMain =
-  withState
-  ( <any>SSRMain(Main)
-  )
+    , routeMatcher
+    )
 
   // routerify
   // ( withState
@@ -85,40 +113,6 @@ const genHtml =
           (DOM)
         )
         (sourceHtml)
-// `
-//   <!DOCTYPE html>
-//   <html>
-//     <head>
-//       <meta charset="utf-8">
-//       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//       <meta name="viewport" content="width=device-width, initial-scale=1">
-
-//       <meta name="theme-color" content="#dab" />
-//       <title> Usoboros-ssr cycling with snakes can be fun! </title>
-
-//       <link rel="icon" type="image/png" href="./assets/icons/favicon.ico">
-//       <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/beon" type="text/css"/> 
-//       <link rel="manifest" href="./manifest.webmanifest">
-
-//       <style id="styles">
-//         ${CSS}
-//       </style>
-//     </head>
-
-//     <body>
-//       <div id="app">
-//         ${DOM}
-//       </div>
-
-//       <script>
-//         if ( 'serviceWorker' in navigator ) {
-//           window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js')})
-//         }
-//       </script>
-//       <script src="${bundleName}"></script>
-//     </body>
-//   </html>
-//   `
 
 const makePageHtml =
   (sourceHtml: string) =>
@@ -128,9 +122,16 @@ const makePageHtml =
           try {
             const CSS = getStyles()
 
+            console.log(route)
             run
-            ( ComposedMain
+            ( SsrComposedMain (route)
             , { ...drivers
+              , history:
+                  makeServerHistoryDriver()
+                  // ( { initialEntries: [ route ]
+                  //   , initialIndex: 0
+                  //   }
+                  // )
               , DOM: 
                   makeHTMLDriver
                   ( (appDOM:string) => {
