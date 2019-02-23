@@ -17,11 +17,19 @@ import
 
 import { styles } from './styles'
 
-const logo =
-  svg
-  ( `.${styles.logo}`
-  , { props: { innerHTML: logoSvg } }
-  )
+// const logo =
+//   () =>
+//     svg
+//     ( `.${styles.logo}`
+//     , { props: { innerHTML: logoSvg } }
+//     )
+
+const wrapSvgLogo =
+  (svgString: string) =>
+    svg
+    ( `.${styles.logo}`
+    , { key: 'logo', props: { innerHTML: svgString } }
+    )
 
 type WrapContent = (vNode: VNode) => VNode
 const wrapContent: WrapContent = (vNode) => div(`.${styles.wrapperContent}`, vNode)
@@ -40,7 +48,7 @@ const view: View =
     ( `.${styles.wrapper}`
     , map
       ( wrapContent
-      , [ logo
+      , [ wrapSvgLogo(logoSvg)
         , div(`.${styles.title}`, title)
         , nav
         ]

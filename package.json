@@ -6,10 +6,10 @@
     "dev": "parcel src/index.html --port 1337 --no-autoinstall --out-dir dev/app",
     "app:build": "parcel build src/index.html --out-dir build/static",
     "app:build:dev": "parcel build src/index.html --no-minify --out-dir dev/static",
-    "server:build:dev": "parcel build src/server.ts --no-minify --target node --bundle-node-modules  --out-dir dev",
-    "server:build": "parcel build src/server.ts --target node --bundle-node-modules  --out-dir build",
+    "server:build:dev": "NODE_ENV=development parcel build src/server.ts --no-minify --target node --bundle-node-modules  --out-dir dev",
+    "server:build": "NODE_ENV=production parcel build src/server.ts --target node --bundle-node-modules  --out-dir build",
     "server:start:dev": "NODE_ENV=development node dev/server.js",
-    "server:start": "node build/server.js",
+    "server:start": "NODE_ENV=production node build/server.js",
     "server:debug": "node inspect build/server.js",
     "icon": "rm ./src/assets/icons/*; icon-gen -i ./src/assets/logo.svg -o ./src/assets/icons -r",
     "test": "ava -w",
@@ -32,6 +32,7 @@
     "parcel-bundler": "^1.11.0",
     "parcel-plugin-inlinesvg": "^0.1.0",
     "parcel-plugin-stringify-anything": "^1.2.0",
+    "parcel-plugin-sw-cache": "^0.2.7",
     "parcel-plugin-typescript-paths": "^0.1.13",
     "tsconfig-paths": "^3.8.0",
     "typescript": "^3.2.2"
@@ -58,11 +59,5 @@
   },
   "assetTypesToStringify": [
     "css"
-  ],
-  "prerender": {
-    "routes": [
-      "/home",
-      "/about"
-    ]
-  }
+  ]
 }

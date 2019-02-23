@@ -3,10 +3,6 @@ import { withState } from '@cycle/state'
 import { makeHistoryDriver } from '@cycle/history'
 import { routerify } from 'cyclic-router'
 import { setStylesTarget } from 'typestyle'
-import
-{ setupPage
-, normalize
-} from 'csstips'
 
 import { Main } from './main'
 import { drivers } from './drivers'
@@ -16,7 +12,6 @@ const ComposedMain = routerify(withState(<any>Main), routeMatcher)
 
 if (process.env.NODE_ENV === 'production') {
   setStylesTarget(<Element>document.getElementById('typestyle'))
-  // setupPage('#app')
 
   run
   ( ComposedMain
@@ -36,9 +31,6 @@ if (process.env.NODE_ENV === 'production') {
       }
     )
 
-  // if (document.head.getElementsByTagName('style').length === 1) {
-  //   setupPage('#app')
-  // }
   setStylesTarget(<Element>document.getElementById('typestyle'))
 
   if (hmr.hot) {

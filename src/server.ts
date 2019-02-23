@@ -22,23 +22,8 @@ const STATIC_PATH =
   (process.env.NODE_ENV === 'production'
     ? './build'
     : './dev') + '/static'
-// const sendStatic =
-//   (filePath: string, encoding: string | null = 'utf8') =>
-//     async () =>
-//       readFile( filePath, encoding)
-//         .catch
-//           ( (err) => {
-//               throw new Error(`Couldn't retrieve file`)
-//             }
-//           )
 
-// const FRONT_BUILD_PATH = `${__dirname}/../../build`
-
-// const sendFrontFile =
-//   (fileName: string, encoding: string | null = 'utf8') => (
-//     { GET: sendStatic(`${FRONT_BUILD_PATH}/${fileName}`, encoding)
-//     }
-//   )
+console.log(process.env.NODE_ENV)
 
 const corsHeaders =
   { 'Access-Control-Allow-Origin': '*'
@@ -78,6 +63,7 @@ const reqFrontAsset =
         , anyPass
           ( [ (p: string) => p.endsWith('.png')
             , (p: string) => p.endsWith('.ico')
+            // , (p: string) => p.endsWith('.js')
             ] 
           )
           ( path )
@@ -121,29 +107,40 @@ const handleRequest =
        )
       .then
        ( (mess) => {
+         let contentType = {}
          if (req.url.endsWith('.png')){
-           res.writeHead
-               ( 200
-               , { 'Content-Type': 'image/png'
-                 }
-               )
+           contentType =
+             { 'Content-Type': 'image/png'
+             }
          }
          if (req.url.endsWith('.svg')){
-           res.writeHead
-               ( 200
-               , { 'Content-Type': 'image/svg+xml'
-                 }
-               )
+           contentType =
+             { 'Content-Type': 'image/svg+xml'
+             }
          }
          if (req.url.endsWith('.ico')){
-            res.writeHead
-                ( 200
-                , { 'Content-Type': 'image/x-icon'
-                  }
-                )
+           contentType =
+             { 'Content-Type': 'image/x-icon'
+             }
          }
-         res.write(mess)
+         if (req.url.endsWith('.js')) {
+           contentType =
+             { 'Content-Type': 'application/javascript'
+             }
+         }
+         return (
+           { status: 200
+           , head: { ...contentType, ...corsHeaders }
+           , message: mess
+           }
+         )
        })
+      .then
+       ( ({ status, head, message }) => {
+           res.writeHead(status, head)
+           res.write(message)
+         }
+       )
       .catch
        ( (err) => {
            console.error(err)
@@ -160,3 +157,5 @@ const handleRequest =
 
 let server = createServer(handleRequest)
 server.listen(9999)
+
+console.log(`Static Path: ${STATIC_PATH}`)
